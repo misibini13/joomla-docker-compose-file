@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  joomla:
+    image: joomla
+    ports:  # Fixed 'port' to 'ports'
+      - "8022:80"
+    depends_on:
+      - mysql
+    environment:
+      JOOMLA_DB_HOST: mysql
+      JOOMLA_DB_USER: root
+      JOOMLA_DB_PASSWORD: "password"
+      JOOMLA_DB_NAME: joomla
+    restart: always
+    volumes:  # Fixed 'volume' to 'volumes'
+      - ./host:/var/www/html  # Removed space after colon
+    networks:
+      - joomlanet  # Fixed indentation
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: joomla
+      MYSQL_ROOT_PASSWORD: "password"
+    restart: always
+    volumes:  # Fixed 'volume' to 'volumes'
+      - ./mysqldata:/var/lib/mysql  # Removed space after colon
+    networks:
+      - joomlanet
+
+networks:
+  joomlanet:
+    ipam:  # Fixed 'ipm' to 'ipam'
+      driver: default
+      config:
+        - subnet: "10.5.20.0/24"
